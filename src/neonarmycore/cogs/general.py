@@ -87,7 +87,7 @@ class General(commands.Cog, name="general"):
         name="help", description="List all commands the bot has loaded."
     )
     async def help(self, context: Context) -> None:
-        prefix = self.bot.config["prefix"]
+        prefix = self.bot.config.prefix
         embed = discord.Embed(
             title="Help", description="List of available commands:", color=0xBEBEFE
         )
@@ -127,7 +127,7 @@ class General(commands.Cog, name="general"):
         )
         embed.add_field(
             name="Prefix:",
-            value=f"/ (Slash Commands) or {self.bot.config['prefix']} for normal commands",
+            value=f"/ (Slash Commands) or {self.bot.config.prefix} for normal commands",
             inline=False,
         )
         embed.set_footer(text=f"Requested by {context.author}")

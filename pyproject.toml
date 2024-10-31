@@ -1,0 +1,34 @@
+[project]
+name = "NeonArmyCore"
+version = "0.1.0"
+description = "The Discord Bot and Brain for the Neon Army"
+authors = [
+    { name = "dasTholo", email = "tholo@das-tholo.de" }
+]
+
+dependencies = [
+    "discord-py>=2.4.0",
+    "python-dotenv>=1.0.1",
+    "pydantic>=2.9.2",
+    "pydantic-settings>=2.6.0",
+    "tomli-w>=1.1.0",
+    "tomli>=2.0.2",
+    "aiosqlite>=0.20.0",
+]
+license = "Apache-2.0"
+readme = "README.md"
+requires-python = ">= 3.12"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.rye]
+managed = true
+dev-dependencies = []
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/neonarmycore"]

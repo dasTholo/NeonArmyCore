@@ -1,0 +1,16 @@
+prefix = "!"
+bot_name = "Neon Army Core"
+
+[discord_settings]
+token = "test"
+invite_link = "https://docs.pydantic.dev/latest/errors/validation_errors/#url_syntax_violation"
+
+[database_settings]
+host = "http://example.de:8529/"
+username = "test"
+password = "test"
+database_name = "test"
+db_prefix = "test"
+
+[intents]
+message_content = true

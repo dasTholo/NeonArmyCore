@@ -6,27 +6,18 @@ Description:
 Version: 6.2.0
 """
 
-import json
 import logging
 import os
 import platform
 import random
-import sys
 
 import aiosqlite
 import discord
 from discord.ext import commands, tasks
 from discord.ext.commands import Context
-from dotenv import load_dotenv
 
 from database import DatabaseManager
-
-if not os.path.isfile(f"{os.path.realpath(os.path.dirname(__file__))}/config.json"):
-    sys.exit("'config.json' not found! Please add it and try again.")
-else:
-    with open(f"{os.path.realpath(os.path.dirname(__file__))}/config.json") as file:
-        config = json.load(file)
-
+from utils.config_utils import BotSettings
 """	
 Setup bot intents (events restrictions)
 For more information about intents, please go to the following websites:
@@ -68,7 +59,13 @@ It is recommended to use slash commands and therefore not use prefix commands.
 
 If you want to use prefix commands, make sure to also enable the intent below in the Discord developer portal.
 """
-# intents.message_content = True
+# todo add intens to config.toml
+intents.message_content = True
+# intents.guild_messages = True
+# intents.guild_reactions = True
+# intents.guilds = True
+# intents.messages = True
+# intents.members = True
 
 # Setup both of the loggers
 
@@ -123,9 +120,10 @@ logger.addHandler(file_handler)
 
 
 class DiscordBot(commands.Bot):
-    def __init__(self) -> None:
+    def __init__(self, config: BotSettings) -> None:
+        # noinspection PyTypeChecker
         super().__init__(
-            command_prefix=commands.when_mentioned_or(config["prefix"]),
+            command_prefix=commands.when_mentioned_or(config.prefix),
             intents=intents,
             help_command=None,
         )
@@ -172,6 +170,7 @@ class DiscordBot(commands.Bot):
         """
         Setup the game status task of the bot.
         """
+        # todo add more statuses
         statuses = ["with you!", "with Krypton!", "with humans!"]
         await self.change_presence(activity=discord.Game(random.choice(statuses)))
 
@@ -181,6 +180,15 @@ class DiscordBot(commands.Bot):
         Before starting the status changing task, we make sure the bot is ready
         """
         await self.wait_until_ready()
+
+    async def show_guilds(self):
+        print(f"Showing guilds: {self.guilds}")
+        for guild in self.guilds:
+            self.logger.info(f"guilds: {guild.name} (ID: {guild.id})")
+
+
+    async def show_members(self):
+        print(f"Showing members: {self.get_all_members()}")
 
     async def setup_hook(self) -> None:
         """
@@ -201,6 +209,8 @@ class DiscordBot(commands.Bot):
                 f"{os.path.realpath(os.path.dirname(__file__))}/database/database.db"
             )
         )
+        await self.show_guilds()
+
 
     async def on_message(self, message: discord.Message) -> None:
         """
@@ -287,7 +297,7 @@ class DiscordBot(commands.Bot):
             raise error
 
 
-load_dotenv()
 
-bot = DiscordBot()
-bot.run(os.getenv("TOKEN"))
+
+# bot = DiscordBot()
+# bot.run()
