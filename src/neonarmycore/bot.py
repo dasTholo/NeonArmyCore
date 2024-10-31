@@ -18,7 +18,8 @@ from discord.ext.commands import Context
 
 from database import DatabaseManager
 from utils.config_utils import BotSettings
-"""	
+
+"""
 Setup bot intents (events restrictions)
 For more information about intents, please go to the following websites:
 https://discordpy.readthedocs.io/en/latest/intents.html
@@ -181,15 +182,6 @@ class DiscordBot(commands.Bot):
         """
         await self.wait_until_ready()
 
-    async def show_guilds(self):
-        print(f"Showing guilds: {self.guilds}")
-        for guild in self.guilds:
-            self.logger.info(f"guilds: {guild.name} (ID: {guild.id})")
-
-
-    async def show_members(self):
-        print(f"Showing members: {self.get_all_members()}")
-
     async def setup_hook(self) -> None:
         """
         This will just be executed when the bot starts the first time.
@@ -210,7 +202,6 @@ class DiscordBot(commands.Bot):
             )
         )
         await self.show_guilds()
-
 
     async def on_message(self, message: discord.Message) -> None:
         """
@@ -296,8 +287,3 @@ class DiscordBot(commands.Bot):
         else:
             raise error
 
-
-
-
-# bot = DiscordBot()
-# bot.run()

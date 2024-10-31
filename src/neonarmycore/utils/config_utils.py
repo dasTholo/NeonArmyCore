@@ -6,8 +6,6 @@ from tomli import load
 from tomli_w import dump
 
 
-
-
 class DiscordSettings(BaseModel):
     token: str
     invite_link: HttpUrl
@@ -28,9 +26,9 @@ class BotDatabaseSettings(BaseModel):
     def serialize_invite_link(self, value: HttpUrl) -> str:
         return value.__str__()
 
+
 class BotIntents(BaseModel):
     message_content: bool = Field(default=True)
-
 
 
 class BotSettings(BaseSettings):
@@ -61,11 +59,16 @@ async def test_save(path: Path.name):
     config = BotSettings(
         discord_settings=DiscordSettings(
             token="test",
-            invite_link="https://docs.pydantic.dev/latest/errors/validation_errors/#url_syntax_violation"
+            invite_link="https://docs.pydantic.dev/latest/errors/validation_errors/#url_syntax_violation",
         ),
-        database_settings=BotDatabaseSettings(host="http://example.de:8529", username="test", password="test", database_name="test",
-                                              db_prefix="test"),
-        intents=BotIntents()
+        database_settings=BotDatabaseSettings(
+            host="http://example.de:8529",
+            username="test",
+            password="test",
+            database_name="test",
+            db_prefix="test",
+        ),
+        intents=BotIntents(),
     )
 
     print(config.model_dump())
@@ -75,4 +78,5 @@ async def test_save(path: Path.name):
 if __name__ == "__main__":
     FILE_PATH = "../../../bot_config_example.toml"
     import asyncio
+
     asyncio.run(test_save(FILE_PATH))
